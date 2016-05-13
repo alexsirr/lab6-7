@@ -142,6 +142,7 @@ func main() {
 		var lname string
 		for rows.Next() {
 			// rows.Scan() // put columns here prefaced with &
+			rows.Scan(&fname, &lname)
 			table += "<tr><td>" + fname + "</td><td>" + lname + "</td></tr>" // <--- EDIT THIS LINE
 		}
 		// finally, close out the body and table
