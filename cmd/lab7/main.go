@@ -91,7 +91,7 @@ func main() {
 	router.GET("/query2", func(c *gin.Context) {
 		table := "<table class='table'><thead><tr>"
 		// put your query here
-		rows, err := db.Query("SELECT * FROM table1") // <--- EDIT THIS LINE
+		rows, err := db.Query("SELECT fname, lname FROM Person JOIN Machine ON Person.id = userid WHERE lastsignin > '2016-01-01 00:00:00';") // <--- EDIT THIS LINE
 		if err != nil {
 			// careful about returning errors to the user!
 			c.AbortWithError(http.StatusInternalServerError, err)
@@ -107,9 +107,12 @@ func main() {
 		// once you've added all the columns in, close the header
 		table += "</thead><tbody>"
 		// columns
+		var fname string
+		var lname string
 		for rows.Next() {
 			// rows.Scan() // put columns here prefaced with &
-			table += "<tr><td></td></tr>" // <--- EDIT THIS LINE
+			rows.Scan(&fname, &lname)
+			table += "<tr><td>" + fname + "</td><td>" + lname + "</td></tr>" // <--- EDIT THIS LINE
 		}
 		// finally, close out the body and table
 		table += "</tbody></table>"
@@ -119,7 +122,7 @@ func main() {
 	router.GET("/query3", func(c *gin.Context) {
 		table := "<table class='table'><thead><tr>"
 		// put your query here
-		rows, err := db.Query("SELECT * FROM table1") // <--- EDIT THIS LINE
+		rows, err := db.Query("SELECT fname, lname FROM Person WHERE id IN (SELECT userid FROM Machine JOIN OS ON OS.id = osid WHERE type LIKE 'OSX%');") // <--- EDIT THIS LINE
 		if err != nil {
 			// careful about returning errors to the user!
 			c.AbortWithError(http.StatusInternalServerError, err)
@@ -135,9 +138,11 @@ func main() {
 		// once you've added all the columns in, close the header
 		table += "</thead><tbody>"
 		// columns
+		var fname string
+		var lname string
 		for rows.Next() {
 			// rows.Scan() // put columns here prefaced with &
-			table += "<tr><td></td></tr>" // <--- EDIT THIS LINE
+			table += "<tr><td>" + fname + "</td><td>" + lname + "</td></tr>" // <--- EDIT THIS LINE
 		}
 		// finally, close out the body and table
 		table += "</tbody></table>"
